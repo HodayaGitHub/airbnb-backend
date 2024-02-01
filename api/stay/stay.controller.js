@@ -4,7 +4,7 @@ import { logger } from "../../services/logger.service.js"
 
 export async function getStays(req, res) {
     try {
-        console.log(req.query)
+        // console.log(req.query)
         // const { filterBy, selectedLabel } = req.query
          const { filterBy } = req.query
 
@@ -45,7 +45,7 @@ export async function removeStay(req, res) {
 export async function updateStay(req, res) {
     try {
         const stay = req.body
-        console.log(stay)
+        // console.log(stay)
         const updatedStay = await stayService.update(stay)
         res.json(updatedStay)
     } catch (err) {
