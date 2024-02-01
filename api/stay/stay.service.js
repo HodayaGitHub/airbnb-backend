@@ -13,33 +13,40 @@ export const stayService = {
     update,
 }
 
-async function query(filterBy, selectedLabel) {
+async function query(filterBy) {
     try {
         const criteria = {}
 
-        if (filterBy?.txt) {
-            criteria.name = { $regex: filterBy.txt, $options: 'i' }
-        }
+        // if (filterBy?.txt) {
+        //     criteria.name = { $regex: filterBy.txt, $options: 'i' }
+        // }
 
-        if (filterBy?.maxPrice > 0) {
-            criteria.price = { $lte: filterBy.maxPrice }
-        }
+        // if (filterBy?.maxPrice > 0) {
+        //     criteria.price = { $lte: filterBy.maxPrice }
+        // }
 
-        // filterBy.labels = ["Space Ranger", "Doll"]
-        if (filterBy?.labels?.length > 0) {
-            criteria.labels = { $in: filterBy.labels }
-        }
+        // // filterBy.labels = ["Space Ranger", "Doll"]
+        // if (filterBy?.labels?.length > 0) {
+        //     criteria.labels = { $in: filterBy.labels }
+        // }
+
+        // const collection = await dbService.getCollection('stay')
+
+        // const sortCriteria = {}
+        // if (selectedLabel?.by) {
+        //     const sortAsc = JSON.parse(selectedLabel.asc)
+        //     sortCriteria[selectedLabel.by] = sortAsc ? 1 : -1
+        // }
+
+        // console.log(sortCriteria)
+        // let stays = await collection.find(criteria).sort(sortCriteria).toArray()
+        
 
         const collection = await dbService.getCollection('stay')
+        let stays = await collection.find(criteria).toArray()
 
-        const sortCriteria = {}
-        if (selectedLabel?.by) {
-            const sortAsc = JSON.parse(selectedLabel.asc)
-            sortCriteria[selectedLabel.by] = sortAsc ? 1 : -1
-        }
+        // let stays = await dbService.getCollection('stay')
 
-        console.log(sortCriteria)
-        let stays = await collection.find(criteria).sort(sortCriteria).toArray()
         return stays
 
     } catch (err) {

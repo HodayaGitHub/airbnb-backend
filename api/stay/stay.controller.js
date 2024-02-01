@@ -4,12 +4,12 @@ import { logger } from "../../services/logger.service.js"
 
 export async function getStays(req, res) {
     try {
-        console.log(req.query
-            )
-        const { filterBy, selectedLabel } = req.query
+        console.log(req.query)
+        // const { filterBy, selectedLabel } = req.query
+         const { filterBy } = req.query
 
         // logger.debug('Getting Stays', filterBy)
-        const stays = await stayService.query(filterBy, selectedLabel)
+        const stays = await stayService.query()
 
         res.json(stays)
 

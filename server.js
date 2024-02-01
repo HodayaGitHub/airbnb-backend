@@ -7,7 +7,6 @@ import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 import { logger } from './services/logger.service.js'
-import { mapService } from './services/map.service.js'
 
 const app = express()
 const server = http.createServer(app)
