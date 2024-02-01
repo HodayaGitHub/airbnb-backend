@@ -13,47 +13,48 @@ export const stayService = {
     update,
 }
 
-async function query(filterBy) {
+// async function query(filterBy) {
+//     try {
+//         const criteria = {}
+
+//         // if (filterBy?.txt) {
+//         //     criteria.name = { $regex: filterBy.txt, $options: 'i' }
+//         // }
+//         // console.log(sortCriteria)
+//         // let stays = await collection.find(criteria).sort(sortCriteria).toArray()
+
+
+//         const collection = await dbService.getCollection('stay')
+//         let stays = await collection.find(criteria).toArray()
+
+//         // let stays = await dbService.getCollection('stay')
+
+//         return stays
+
+//     } catch (err) {
+//         logger.error('cannot find stays', err)
+//         throw err
+//     }
+// }
+
+async function query(filterBy, page = 1) {
     try {
         const criteria = {}
 
-        // if (filterBy?.txt) {
-        //     criteria.name = { $regex: filterBy.txt, $options: 'i' }
-        // }
-
-        // if (filterBy?.maxPrice > 0) {
-        //     criteria.price = { $lte: filterBy.maxPrice }
-        // }
-
-        // // filterBy.labels = ["Space Ranger", "Doll"]
-        // if (filterBy?.labels?.length > 0) {
-        //     criteria.labels = { $in: filterBy.labels }
-        // }
-
-        // const collection = await dbService.getCollection('stay')
-
-        // const sortCriteria = {}
-        // if (selectedLabel?.by) {
-        //     const sortAsc = JSON.parse(selectedLabel.asc)
-        //     sortCriteria[selectedLabel.by] = sortAsc ? 1 : -1
-        // }
-
-        // console.log(sortCriteria)
-        // let stays = await collection.find(criteria).sort(sortCriteria).toArray()
-        
-
         const collection = await dbService.getCollection('stay')
-        let stays = await collection.find(criteria).toArray()
 
-        // let stays = await dbService.getCollection('stay')
+        const itemsPerPage = 48
+        const skips = itemsPerPage * (page - 1)
+
+        let stays = await collection.find(criteria).skip(skips).limit(itemsPerPage).toArray()
 
         return stays
-
     } catch (err) {
-        logger.error('cannot find stays', err)
+        logger.error('Cannot find stays', err)
         throw err
     }
 }
+
 
 async function getById(stayId) {
     try {

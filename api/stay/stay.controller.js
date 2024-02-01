@@ -2,22 +2,36 @@ import { stayService } from "./stay.service.js"
 import { logger } from "../../services/logger.service.js"
 
 
+// export async function getStays(req, res) {
+//     try {
+//         // console.log(req.query)
+//         // const { filterBy, selectedLabel } = req.query
+//          const { filterBy } = req.query
+
+//         // logger.debug('Getting Stays', filterBy)
+//         const stays = await stayService.query()
+
+//         res.json(stays)
+
+//     } catch (err) {
+//         logger.error('Cannot get stays', err)
+//         res.status(500).send({ err: 'Failed to get stay' })
+//     }
+// }
+
+
 export async function getStays(req, res) {
     try {
-        // console.log(req.query)
-        // const { filterBy, selectedLabel } = req.query
-         const { filterBy } = req.query
-
-        // logger.debug('Getting Stays', filterBy)
-        const stays = await stayService.query()
-
+        const { filterBy, page } = req.query
+        const stays = await stayService.query(filterBy, page)
         res.json(stays)
-
     } catch (err) {
         logger.error('Cannot get stays', err)
         res.status(500).send({ err: 'Failed to get stay' })
     }
 }
+
+
 
 export async function getById(req, res) {
     try {
