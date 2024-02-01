@@ -13,40 +13,25 @@ export const stayService = {
     update,
 }
 
-// async function query(filterBy) {
-//     try {
-//         const criteria = {}
 
-//         // if (filterBy?.txt) {
-//         //     criteria.name = { $regex: filterBy.txt, $options: 'i' }
-//         // }
-//         // console.log(sortCriteria)
-//         // let stays = await collection.find(criteria).sort(sortCriteria).toArray()
-
-
-//         const collection = await dbService.getCollection('stay')
-//         let stays = await collection.find(criteria).toArray()
-
-//         // let stays = await dbService.getCollection('stay')
-
-//         return stays
-
-//     } catch (err) {
-//         logger.error('cannot find stays', err)
-//         throw err
-//     }
-// }
+const ITEMS_PER_PAGE = 48
 
 async function query(filterBy, page = 1) {
     try {
         const criteria = {}
-
         const collection = await dbService.getCollection('stay')
 
-        const itemsPerPage = 48
-        const skips = itemsPerPage * (page - 1)
+        const skips = ITEMS_PER_PAGE * (page - 1)
 
-        let stays = await collection.find(criteria).skip(skips).limit(itemsPerPage).toArray()
+        if (filterBy?.label) {
+            criteria.$or = [
+                { "type": filterBy.label },
+                { "amenities": { $elemMatch: { $eq: filterBy.label } } }
+            ]
+        }
+
+        let stays = await collection.find(criteria).skip(skips).limit(ITEMS_PER_PAGE).toArray()
+
 
         return stays
     } catch (err) {
@@ -54,7 +39,6 @@ async function query(filterBy, page = 1) {
         throw err
     }
 }
-
 
 async function getById(stayId) {
     try {
@@ -105,3 +89,4 @@ async function add(stay) {
         throw err
     }
 }
+
