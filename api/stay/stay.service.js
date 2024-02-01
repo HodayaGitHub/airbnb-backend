@@ -14,14 +14,13 @@ export const stayService = {
 }
 
 
-const ITEMS_PER_PAGE = 48
+// const ITEMS_PER_PAGE = 48
 
-async function query(filterBy, page = 1) {
+async function query(filterBy, page = 1, itemsPerPage) {
     try {
         const criteria = {}
         const collection = await dbService.getCollection('stay')
 
-        const skips = ITEMS_PER_PAGE * (page - 1)
 
         if (filterBy?.label) {
             criteria.$or = [
@@ -30,10 +29,49 @@ async function query(filterBy, page = 1) {
             ]
         }
 
-        let stays = await collection.find(criteria).skip(skips).limit(ITEMS_PER_PAGE).toArray()
+        if (filterBy?.roomType && filterBy.roomType !== "Any type") {
+            criteria.roomType = filterBy.roomType
+        }
+
+        if (filterBy?.price) {
+            criteria.price = {
+                $gte: +filterBy.price.minPrice,
+                $lte: +filterBy.price.maxPrice
+            }
+        }
+
+        if (filterBy?.beds) {
+            criteria.beds = { $gte: +filterBy.beds }
+        }
+
+        if (filterBy?.bathrooms) {
+            criteria.bathrooms = { $gte: +filterBy.bathrooms }
+        }
+
+        if (filterBy?.bedrooms) {
+            criteria.bedrooms = { $gte: +filterBy.bedrooms }
+        }
+
+        if (filterBy?.region) {
+            console.log(filterBy.region)
+            criteria['loc.country'] = filterBy.region
+        }
+
+        if (filterBy?.guestFavorite !== "false") {
+            console.log(filterBy.guestFavorite)
+            criteria.guestFavorite = { $ne: false }
+        }
 
 
-        return stays
+
+        let skips = +itemsPerPage * (page - 1)
+        let totalDocumentsCount = await collection.find(criteria).toArray()
+        let stays = await collection.find(criteria).skip(skips).limit(+itemsPerPage).toArray();
+
+        console.log('totalDocumentsCount ', totalDocumentsCount.length);
+        return { totalDocumentsCount, stays }
+
+        // return stays
     } catch (err) {
         logger.error('Cannot find stays', err)
         throw err

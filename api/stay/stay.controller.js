@@ -22,8 +22,8 @@ import { logger } from "../../services/logger.service.js"
 
 export async function getStays(req, res) {
     try {
-        const { filterBy, page } = req.query
-        const stays = await stayService.query(filterBy, page)
+        const { filterBy, page, itemsPerPage} = req.query
+        const stays = await stayService.query(filterBy, page, itemsPerPage)
         res.json(stays)
     } catch (err) {
         logger.error('Cannot get stays', err)
