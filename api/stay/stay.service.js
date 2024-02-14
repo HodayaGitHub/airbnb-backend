@@ -1,8 +1,6 @@
-import fs from 'fs'
-
-import { ObjectId } from 'mongodb'
-import { dbService } from '../../services/db.service.js'
-import { logger } from '../../services/logger.service.js'
+import { ObjectId } from 'mongodb';
+import { dbService } from '../../services/db.service.js';
+import { logger } from '../../services/logger.service.js';
 
 
 export const stayService = {
@@ -11,21 +9,23 @@ export const stayService = {
     remove,
     add,
     update,
+    getPrices,
 }
 
 
-// const ITEMS_PER_PAGE = 48
+const ITEMS_PER_PAGE = 24;
 
-async function query(filterBy, page = 1, itemsPerPage) {
+async function query(filterBy, page = 1) {
     try {
         const criteria = buildCriteria(filterBy);
         const collection = await dbService.getCollection('stay');
 
-        let skips = +itemsPerPage * (page - 1);
+        let skips = ITEMS_PER_PAGE * (page - 1);
         let totalDocumentsCount = await collection.find(criteria).toArray();
-        let stays = await collection.find(criteria).skip(skips).limit(+itemsPerPage).toArray();
+        let stays = await collection.find(criteria).skip(skips).limit(ITEMS_PER_PAGE).toArray();
 
-        console.log('totalDocumentsCount ', totalDocumentsCount.length);
+        // console.log('totalDocumentsCount ', totalDocumentsCount.length);
+        totalDocumentsCount = totalDocumentsCount.length;
         return { totalDocumentsCount, stays };
     } catch (err) {
         logger.error('Cannot find stays', err);
@@ -41,11 +41,11 @@ function buildCriteria(filterBy) {
             { "type": filterBy.label },
             { "amenities": { $elemMatch: { $eq: filterBy.label } } }
         ];
-    }
+    };
 
     if (filterBy?.roomType && filterBy.roomType !== "Any type") {
         criteria.roomType = filterBy.roomType;
-    }
+    };
 
     if (filterBy?.price) {
         criteria.price = {
@@ -56,30 +56,38 @@ function buildCriteria(filterBy) {
 
     if (filterBy?.beds) {
         criteria.beds = { $gte: +filterBy.beds };
-    }
+    };
 
     if (filterBy?.bathrooms) {
         criteria.bathrooms = { $gte: +filterBy.bathrooms };
-    }
+    };
 
     if (filterBy?.bedrooms) {
         criteria.bedrooms = { $gte: +filterBy.bedrooms };
-    }
+    };
 
     if (filterBy?.region) {
-        console.log(filterBy.region);
         criteria['loc.country'] = filterBy.region;
-    }
+    };
 
     if (filterBy?.guestFavorite !== "false") {
-        console.log(filterBy.guestFavorite);
         criteria.guestFavorite = { $ne: false };
-    }
+    };
 
     return criteria;
 }
 
-
+async function getPrices() {
+    try {
+        const collection = await dbService.getCollection('stay')
+        let prices = await collection.find({}, { projection: { price: -1 } }).toArray();
+        // return(prices)
+        return prices.map(stay => stay.price);
+    } catch (err) {
+        logger.error(`while finding stay ${stayId}`, err)
+        throw err
+    }
+}
 
 async function getById(stayId) {
     try {

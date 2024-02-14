@@ -1,13 +1,15 @@
 import express from 'express'
 import { log } from '../../middlewares/logger.middleware.js'
-import {getStays, getById, removeStay, updateStay, addStay}  from './stay.controller.js'
+import { getStaysPrices, getStays, getById, removeStay, updateStay, addStay } from './stay.controller.js'
 import { requireAuth, requireAdmin } from '../../middlewares/requireAuth.middleware.js'
 
 export const stayRoutes = express.Router()
 
 stayRoutes.get('/', log, getStays)
+stayRoutes.get('/prices', log, getStaysPrices)
 stayRoutes.post('/', addStay)
 stayRoutes.get('/:id', getById)
+
 
 // admin required:
 stayRoutes.put('/', requireAdmin, updateStay)
