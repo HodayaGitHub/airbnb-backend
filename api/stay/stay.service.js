@@ -54,17 +54,17 @@ function buildCriteria(filterBy) {
         };
     }
 
-    if (filterBy?.beds) {
+    if (filterBy?.beds && filterBy.beds !== "Any") {
         criteria.beds = { $gte: +filterBy.beds };
-    };
+    }
 
-    if (filterBy?.bathrooms) {
+    if (filterBy?.bathrooms && filterBy.bathrooms !== "Any") {
         criteria.bathrooms = { $gte: +filterBy.bathrooms };
-    };
+    }
 
-    if (filterBy?.bedrooms) {
+    if (filterBy?.bedrooms && filterBy.bedrooms !== "Any") {
         criteria.bedrooms = { $gte: +filterBy.bedrooms };
-    };
+    }
 
     if (filterBy?.region) {
         criteria['loc.country'] = filterBy.region;
