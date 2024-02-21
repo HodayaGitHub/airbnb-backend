@@ -37,7 +37,7 @@ async function query(filterBy = {}) {
 async function getById(userId) {
     try {
         const collection = await dbService.getCollection('user')
-        const user = await collection.findOne({ _id: ObjectId(userId) })
+        const user = await collection.findOne({ _id: new ObjectId(userId) })
         delete user.password
         return user
     } catch (err) {
@@ -83,10 +83,8 @@ async function update(user) {
     try {
         // peek only updatable fields!
         const userToSave = {
-            _id: ObjectId(user._id),
-            username: user.username,
-            fullname: user.fullname,
-            isAdmin: user.isAdmin,
+            _id: new ObjectId(user._id),
+            favoriteStays: user.favoriteStays,
         }
         const collection = await dbService.getCollection('user')
         await collection.updateOne({ _id: userToSave._id }, { $set: userToSave })
