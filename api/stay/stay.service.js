@@ -66,7 +66,7 @@ function buildCriteria(filterBy) {
         criteria.bedrooms = { $gte: +filterBy.bedrooms };
     }
 
-    if (filterBy?.region) {
+    if (filterBy?.region && filterBy?.region !== "I'm flexible") {
         criteria['loc.country'] = filterBy.region;
     };
 
