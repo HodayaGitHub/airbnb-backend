@@ -4,7 +4,7 @@ import { logger } from "../../services/logger.service.js"
 
 export async function getStays(req, res) {
     try {
-        const { filterBy, page, itemsPerPage} = req.query
+        const { filterBy, page, itemsPerPage } = req.query
         const stays = await stayService.query(filterBy, page, itemsPerPage)
         res.json(stays)
     } catch (err) {
@@ -23,7 +23,6 @@ export async function getStaysPrices(req, res) {
         res.status(500).send({ err: 'Failed to get stays prices' })
     }
 }
-
 
 export async function getById(req, res) {
     try {
@@ -51,7 +50,6 @@ export async function removeStay(req, res) {
 export async function updateStay(req, res) {
     try {
         const stay = req.body
-        // console.log(stay)
         const updatedStay = await stayService.update(stay)
         res.json(updatedStay)
     } catch (err) {
@@ -73,3 +71,4 @@ export async function addStay(req, res) {
         res.status(500).send({ err: 'Failed to add stay' })
     }
 }
+

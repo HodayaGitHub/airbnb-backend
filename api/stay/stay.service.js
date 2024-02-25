@@ -22,9 +22,9 @@ async function query(filterBy, page = 1) {
 
         let skips = ITEMS_PER_PAGE * (page - 1);
         let totalDocumentsCount = await collection.find(criteria).toArray();
+        console.time();
         let stays = await collection.find(criteria).skip(skips).limit(ITEMS_PER_PAGE).toArray();
-
-        // console.log('totalDocumentsCount ', totalDocumentsCount.length);
+        console.timeEnd()
         totalDocumentsCount = totalDocumentsCount.length;
         return { totalDocumentsCount, stays };
     } catch (err) {
@@ -112,7 +112,6 @@ async function remove(stayId) {
 
 async function update(stay) {
     try {
-        console.log('stay to remove', stay)
         const stayToSave = {
             name: stay.name,
             price: stay.price,
