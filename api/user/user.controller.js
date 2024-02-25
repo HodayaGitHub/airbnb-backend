@@ -47,3 +47,14 @@ export async function updateUser(req, res) {
         res.status(500).send({ err: 'Failed to update user' })
     }
 }
+
+export async function getUserWishlist(req, res) {
+    try {
+        const userId = req.params.id;
+        const userWishlist = await userService.userWishlist(userId);
+        console.log('userWishlist', userWishlist);
+        res.send(userWishlist) 
+    } catch (err) {
+        logger.error('Failed to get user wishlist', err)
+    }
+}

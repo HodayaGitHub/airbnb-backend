@@ -11,7 +11,8 @@ export const userService = {
     getByFullName,
     remove,
     update,
-    add
+    add, 
+    userWishlist,
 }
 
 async function query(filterBy = {}) {
@@ -50,7 +51,6 @@ async function getByUsername(username) {
     try {
         const collection = await dbService.getCollection('user')
         const user = await collection.findOne({ username })
-        console.log('username from mongo', username)
         return user
     } catch (err) {
         logger.error(`while finding user ${username}`, err)
@@ -136,4 +136,18 @@ function _buildCriteria(filterBy) {
         criteria.balance = { $gte: filterBy.minBalance }
     }
     return criteria
+}
+
+async function userWishlist(userId) {
+    try {
+        const user = await getById(userId);
+        const userWishlist = user.favoriteStays.map(id => new ObjectId(id)); 
+        const collection = await dbService.getCollection('stay');
+        const userWishlistStays = await collection.find({ _id: { $in: userWishlist } }).toArray();
+        return userWishlistStays
+
+    } catch (err) {
+        logger.error(`while finding user's wishlist ${userId}`, err);
+        throw err;
+    }
 }

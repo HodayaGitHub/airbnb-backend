@@ -7,8 +7,8 @@ export const stayRoutes = express.Router()
 
 stayRoutes.get('/', log, getStays)
 stayRoutes.get('/prices', log, getStaysPrices)
-stayRoutes.post('/', addStay)
 stayRoutes.get('/:id', getById)
+stayRoutes.post('/', addStay)
 
 
 // admin required:
