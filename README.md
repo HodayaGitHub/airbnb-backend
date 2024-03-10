@@ -9,7 +9,6 @@ Welcome to the backend of Journey - Your Gateway to Unique Travel Experiences.
 5. [Environment Variables](#environment-variables)
 6. [Running the Server](#running-the-server)
 7. [API Endpoints](#api-endpoints)
-8. [Feedback and Support](#feedback-and-support)
 
 ## 1. Introduction
 This repository contains the backend code for the Journey web application. It handles data storage, retrieval, and business logic for the platform.
@@ -60,9 +59,6 @@ Example:
 ```POST /api/users: Create a new user.```
 
 Make sure to replace placeholders like `your-username` and customize the information according to your project structure and requirements.
-
-## 8. Feedback and Support
-If you encounter any issues, have suggestions, or need assistance, please reach out to our support team at support@journeyapp.com.
 
 Thank you for contributing to the backend of Journey! We appreciate your efforts in making the travel experience seamless for our users.
 
