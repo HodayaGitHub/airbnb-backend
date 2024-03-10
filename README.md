@@ -45,13 +45,13 @@ Create a .env file in the root of the backend directory and set the following en
 ```SECRET_KEY=your_secret_key_for_jwt```
 ```Replace your_mongodb_connection_string with your actual MongoDB connection string and set a secure SECRET_KEY for JWT token generation.```
 
-##6. Running the Server
+## 6. Running the Server
 To start the backend server, run the following command:
 
 npm start
 The server will run on the port specified in the .env file (default is 3001).
 
-##7. API Endpoints
+## 7. API Endpoints
 Document the API endpoints and provide examples of how to use them. You can use tools like Swagger for API documentation.
 
 Example:
@@ -61,7 +61,7 @@ Example:
 
 Make sure to replace placeholders like `your-username` and customize the information according to your project structure and requirements.
 
-8. Feedback and Support
+## 8. Feedback and Support
 If you encounter any issues, have suggestions, or need assistance, please reach out to our support team at support@journeyapp.com.
 
 Thank you for contributing to the backend of Journey! We appreciate your efforts in making the travel experience seamless for our users.
